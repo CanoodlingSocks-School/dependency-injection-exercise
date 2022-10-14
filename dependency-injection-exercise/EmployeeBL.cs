@@ -8,16 +8,21 @@ using System.Threading.Tasks;
 
 namespace dependency_injection_exercise
 {
-    // To get data we need to utilize the EmployeeDAL class.
-    // EmployeeBL depends on EmployeeDAL
     public class EmployeeBL
     {
-        public EmployeeDAL employeeDal;
+        // Instead of creating an object of the EmployeeDAL class, we've created a constructor
+        // which accepts one parameter of the dependency object type.
+
+        // The parameter of the constructor class is of the type interface - not the concrete class.
+        // Now this parameter can accept any concrete class object that implements the IEMployeeDAL interface!
+
+        public IEmployeeDAL employeeDal;
+        public EmployeeBL(IEmployeeDAL employeeDal) // We're passing EmployeeDAL class as a parameter to the constructor of the EmployeeBL class
+        {
+            this.employeeDal = employeeDal;        // We're injecting the dependency object throught the constructor!
+        }
         public List<Employee> GetAllEmployees()
         {
-            // We create an instance of the EmployeeDAL class to be able to invoke the SelectAllEmployees() method
-            // This is tight coupling because everytime the EmployeeDAL class changes, this class will also need to change
-            employeeDal = new EmployeeDAL();
             return employeeDal.SelectAllEmployees();
         }
     }
